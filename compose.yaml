@@ -1,0 +1,7 @@
+﻿services:
+  ims.webapp:
+    image: ims.webapp
+    build:
+      context: .
+      dockerfile: IMS.WebApp/Dockerfile
+
