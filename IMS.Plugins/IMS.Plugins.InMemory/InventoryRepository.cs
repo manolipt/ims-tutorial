@@ -19,4 +19,17 @@ public class InventoryRepository : IInventoryRepository
 
         return _inventories.Where(x => x.InventoryName.Contains(name, StringComparison.OrdinalIgnoreCase));
     }
+
+    public Task AddInventoryAsync(Inventory inventory)
+    {
+        if (_inventories.Any(x => x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
+        {
+            return Task.CompletedTask;
+        }
+
+        inventory.InventoryId = _inventories.Max(x => x.InventoryId) + 1;
+        _inventories.Add(inventory);
+        
+        return Task.CompletedTask;
+    }
 }
