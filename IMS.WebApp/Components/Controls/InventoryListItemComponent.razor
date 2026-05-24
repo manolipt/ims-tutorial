@@ -1,15 +1,18 @@
-@if (this.Inventory is not null)
+@inject NavigationManager Navigation
+
+@if (Inventory is not null)
 {
     <tr>
         <td>@Inventory.InventoryName</td>
         <td>@Inventory.Quantity</td>
         <td>@Inventory.Price.ToString("c")</td>
         <td>
-            <button
+            <a
                 type="button"
-                class="btn btn-light">
+                class="btn btn-light"
+                href="/inventories/edit/@Inventory.InventoryId">
                 Edit
-            </button>
+            </a>
         </td>
     </tr>
 }
@@ -17,4 +20,9 @@
 @code {
     [Parameter]
     public Inventory? Inventory { get; set; }
+
+    private void EditInventory()
+    {
+        Navigation.NavigateTo($"/inventories/edit/{Inventory!.InventoryId}");
+    }
 }

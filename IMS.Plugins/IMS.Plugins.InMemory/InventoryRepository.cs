@@ -13,6 +13,11 @@ public class InventoryRepository : IInventoryRepository
         new Inventory { InventoryId = 4, InventoryName = "Bike Pedals", Quantity = 20, Price = 1 }
     ];
 
+    public Task<Inventory?> GetInventoryByIdAsync(int inventoryId)
+    {
+        return Task.FromResult(_inventories.FirstOrDefault(i => i.InventoryId == inventoryId));
+    }
+
     public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
     {
         if (string.IsNullOrWhiteSpace(name)) return await Task.FromResult(_inventories);
@@ -22,7 +27,9 @@ public class InventoryRepository : IInventoryRepository
 
     public Task AddInventoryAsync(Inventory inventory)
     {
-        if (_inventories.Any(x => x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
+        // Enforce uniqueness of inventory name
+        if (_inventories.Any(x =>
+                x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
         {
             return Task.CompletedTask;
         }
@@ -30,6 +37,26 @@ public class InventoryRepository : IInventoryRepository
         inventory.InventoryId = _inventories.Max(x => x.InventoryId) + 1;
         _inventories.Add(inventory);
         
+        return Task.CompletedTask;
+    }
+
+    public Task UpdateInventoryAsync(Inventory inventory)
+    {
+        // Enforce uniqueness of inventory name
+        if (_inventories.Any(x =>
+                x.InventoryId != inventory.InventoryId &&
+                x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
+        {
+            return Task.CompletedTask;
+        }
+            
+        var invToUpdate = _inventories.FirstOrDefault(x => x.InventoryId == inventory.InventoryId);
+        
+        if (invToUpdate is null) return Task.CompletedTask;
+        
+        invToUpdate.InventoryName = inventory.InventoryName;
+        invToUpdate.Price = inventory.Price;
+        invToUpdate.Quantity = inventory.Quantity;
         return Task.CompletedTask;
     }
 }
