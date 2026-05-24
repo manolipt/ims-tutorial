@@ -1,7 +1,8 @@
 using IMS.Plugins.InMemory;
 using IMS.UseCases.Inventories;
-using IMS.UseCases.Inventories.Interfaces;
+using IMS.UseCases.Inventories.GetInventoryById;
 using IMS.UseCases.PluginInterfaces;
+using IMS.WebApp;
 using IMS.WebApp.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,10 +12,17 @@ builder.Services.AddRazorComponents();
 
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
 
-builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
-builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
-builder.Services.AddTransient<IEditInventoryUseCase, EditInventoryUseCase>();
-builder.Services.AddTransient<IDeleteInventoryByIdUseCase, DeleteInventoryByIdUseCase>();
+// builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
+// builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
+// builder.Services.AddTransient<IEditInventoryUseCase, EditInventoryUseCase>();
+// builder.Services.AddTransient<IDeleteInventoryByIdUseCase, DeleteInventoryByIdUseCase>();
+
+builder.Services.AddQueryHandler<GetInventoryByIdRequest, GetInventoryByIdResponse, GetInventoryByIdQueryHandler>();
+builder.Services.AddQueryHandler<ViewInventoriesByNameRequest, ViewInventoriesByNameResponse, ViewInventoriesByNameQueryHandler>();
+
+builder.Services.AddCommandHandler<AddInventoryCommand, AddInventoryCommandHandler>();
+builder.Services.AddCommandHandler<EditInventoryCommand, EditInventoryCommandHandler>();
+builder.Services.AddCommandHandler<DeleteInventoryByIdCommand, DeleteInventoryByIdCommandHandler>();
 
 var app = builder.Build();
 

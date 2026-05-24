@@ -1,4 +1,4 @@
-@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+@inject IQueryHandler<ViewInventoriesByNameRequest, ViewInventoriesByNameResponse> ViewInventoriesByNameQueryHandler
 
 <table class="table">
     <thead>
@@ -25,19 +25,27 @@
     private List<Inventory>? _inventories;
 
     [Parameter] public string? Filter { get; set; } = string.Empty;
-
+    
     protected override async Task OnInitializedAsync()
     {
-        _inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(Filter ?? string.Empty)).ToList();
+        
+        _inventories = await RunQuery();
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        _inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(Filter ?? string.Empty)).ToList();
+        _inventories = await RunQuery();
     }
 
     private async Task OnInventoryDeleted()
     {
-        _inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(Filter ?? string.Empty)).ToList();
+        _inventories = await RunQuery();
+    }
+
+    private async Task<List<Inventory>> RunQuery()
+    {
+        var response = await ViewInventoriesByNameQueryHandler
+            .HandleAsync(new ViewInventoriesByNameRequest(Filter ?? string.Empty));
+        return response.Inventories.ToList();
     }
 }
