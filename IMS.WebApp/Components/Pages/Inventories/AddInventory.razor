@@ -9,10 +9,10 @@
 <EditForm Model="Inventory" FormName="formInventory" OnValidSubmit="Save">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
-    
+
     <div class="form-group">
         <label for="name">Inventory Name</label>
-        <InputText class="form-control" id="name" @bind-Value="Inventory.InventoryName" />
+        <InputText class="form-control" id="name" @bind-Value="Inventory.InventoryName"/>
         <ValidationMessage For="() => Inventory.InventoryName"></ValidationMessage>
     </div>
 
@@ -34,8 +34,7 @@
 </EditForm>
 
 @code {
-    [SupplyParameterFromForm]
-    private Inventory? Inventory { get; set; }
+    [SupplyParameterFromForm] private Inventory? Inventory { get; set; }
 
     protected override void OnInitialized()
     {
@@ -47,4 +46,5 @@
         await AddInventoryUseCase.ExecuteAsync(Inventory!);
         Navigation.NavigateTo("/inventories");
     }
+
 }

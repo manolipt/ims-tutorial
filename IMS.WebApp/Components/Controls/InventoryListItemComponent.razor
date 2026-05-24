@@ -1,28 +1,36 @@
-@inject NavigationManager Navigation
+@inject IDeleteInventoryByIdUseCase DeleteInventoryByIdUseCase
 
-@if (Inventory is not null)
-{
-    <tr>
-        <td>@Inventory.InventoryName</td>
-        <td>@Inventory.Quantity</td>
-        <td>@Inventory.Price.ToString("c")</td>
-        <td>
-            <a
-                type="button"
-                class="btn btn-light"
-                href="/inventories/edit/@Inventory.InventoryId">
-                Edit
-            </a>
-        </td>
-    </tr>
-}
+<tr>
+    <td>@Inventory.InventoryName</td>
+    <td>@Inventory.Quantity</td>
+    <td>@Inventory.Price.ToString("c")</td>
+    <td>
+        <a
+            type="button"
+            class="btn btn-light"
+            href="/inventories/edit/@Inventory.InventoryId">
+            Edit
+        </a>
+    </td>
+    <td>
+        <EditForm Enhance="true"
+                  FormName="@($"form-delete-inventory-{Inventory.InventoryId}")"
+                  Model="Inventory"
+                  OnValidSubmit="() => DeleteInventory(Inventory.InventoryId)">
+            <button type="submit" class="btn btn-light">Delete</button>
+        </EditForm>
+    </td>
+</tr>
 
 @code {
-    [Parameter]
-    public Inventory? Inventory { get; set; }
+    [Parameter] public required Inventory Inventory { get; set; }
 
-    private void EditInventory()
+    [Parameter] public EventCallback<Inventory> OnDeleteInventory { get; set; }
+
+    private async Task DeleteInventory(int inventoryId)
     {
-        Navigation.NavigateTo($"/inventories/edit/{Inventory!.InventoryId}");
+        await DeleteInventoryByIdUseCase.ExecuteAsync(inventoryId);
+        await OnDeleteInventory.InvokeAsync(Inventory);
     }
+
 }

@@ -11,12 +11,12 @@
     <EditForm Model="Inventory" FormName="Inventory" OnValidSubmit="Save">
         <DataAnnotationsValidator/>
         <ValidationSummary/>
-    
+
         <InputNumber @bind-Value="Inventory.InventoryId" hidden></InputNumber>
-    
+
         <div class="form-group">
             <label for="name">Inventory Name</label>
-            <InputText class="form-control" id="name" @bind-Value="Inventory.InventoryName" />
+            <InputText class="form-control" id="name" @bind-Value="Inventory.InventoryName"/>
             <ValidationMessage For="() => Inventory.InventoryName"></ValidationMessage>
         </div>
 
@@ -31,7 +31,7 @@
             <InputNumber class="form-control" id="price" @bind-Value="Inventory.Price"/>
             <ValidationMessage For="() => Inventory.Price"></ValidationMessage>
         </div>
-    
+
         <br/>
         <button type="submit" class="btn btn-primary">Save</button>
         <a href="/inventories" class="btn btn-primary">Cancel</a>
@@ -40,7 +40,7 @@
 
 @code {
     [Parameter] public int InventoryId { get; init; }
-    
+
     [SupplyParameterFromForm] private Inventory? Inventory { get; set; }
 
     private async Task Save()
@@ -58,4 +58,5 @@
             Navigation.NotFound();
         }
     }
+
 }
