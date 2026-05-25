@@ -3,13 +3,12 @@ using IMS.UseCases.PluginInterfaces;
 
 namespace IMS.UseCases.Inventories;
 
-using QueryHandler = IQueryHandler<ViewInventoriesByNameRequest, ViewInventoriesByNameResponse>;
+using QueryHandler = IQueryHandler<ViewInventoriesByNameQuery, IEnumerable<Inventory>>;
 
-public record ViewInventoriesByNameRequest(string Name = "");
-public record ViewInventoriesByNameResponse(IEnumerable<Inventory> Inventories);
+public record ViewInventoriesByNameQuery(string Name = "");
 
 public class ViewInventoriesByNameQueryHandler(IInventoryRepository inventoryRepository) : QueryHandler
 {
-    async Task<ViewInventoriesByNameResponse> QueryHandler.HandleAsync(ViewInventoriesByNameRequest request)
-        => new(await inventoryRepository.GetInventoriesByNameAsync(request.Name));
+    async Task<IEnumerable<Inventory>> QueryHandler.HandleAsync(ViewInventoriesByNameQuery query)
+        => await inventoryRepository.GetInventoriesByNameAsync(query.Name);
 }

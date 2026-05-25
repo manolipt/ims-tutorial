@@ -1,0 +1,39 @@
+@inject ICommandHandler<DeleteProductByIdCommand> DeleteProductByIdCommandHandler
+
+@if (Product is not null)
+{
+    <tr>
+        <td>@Product.ProductName</td>
+        <td>@Product.Quantity</td>
+        <td>@Product.Price.ToString("c")</td>
+        <td>
+            <a
+                type="button"
+                class="btn btn-light"
+                href="/products/edit/@Product.ProductId">
+                Edit
+            </a>
+        </td>
+        <td>
+            <button
+                type="button"
+                class="btn btn-light"
+                @onclick="async () => await DeleteProduct(Product.ProductId)">
+                Delete
+            </button>
+        </td>
+    </tr>
+}
+
+@code {
+    [Parameter] public Product? Product { get; set; }
+
+    [Parameter] public EventCallback<Product> OnDeleteProduct { get; set; }
+
+    private async Task DeleteProduct(int productId)
+    {
+        await DeleteProductByIdCommandHandler.HandleAsync(new DeleteProductByIdCommand(productId));
+        await OnDeleteProduct.InvokeAsync(Product);
+        Product = null;
+    }
+}

@@ -1,0 +1,63 @@
+@page "/products/edit/{ProductId:int}"
+
+@inject ICommandHandler<EditProductCommand> EditProductCommandHandler
+@inject IQueryHandler<GetProductByIdQuery, Product?> GetProductByIdQueryHandler
+@inject NavigationManager Navigation
+
+<h3>Edit Product</h3>
+
+@if (Product is not null)
+{
+    <EditForm Model="Product" FormName="Product" OnValidSubmit="Save">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+
+        <InputNumber @bind-Value="Product.ProductId" hidden></InputNumber>
+
+        <div class="form-group">
+            <label for="name">Product Name</label>
+            <InputText class="form-control" id="name" @bind-Value="Product.ProductName"/>
+            <ValidationMessage For="() => Product.ProductName"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <InputNumber class="form-control" id="quantity" @bind-Value="Product.Quantity"/>
+            <ValidationMessage For="() => Product.Quantity"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price</label>
+            <InputNumber class="form-control" id="price" @bind-Value="Product.Price"/>
+            <ValidationMessage For="() => Product.Price"></ValidationMessage>
+        </div>
+
+        <br/>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="/products" class="btn btn-primary">Cancel</a>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int ProductId { get; init; }
+
+    [SupplyParameterFromForm] private Product? Product { get; set; }
+
+    private async Task Save()
+    {
+        if (Product is null) return;
+        await EditProductCommandHandler.HandleAsync(new EditProductCommand(Product));
+        Navigation.NavigateTo("/products");
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Product ??= await GetProductByIdQueryHandler
+            .HandleAsync(new GetProductByIdQuery(ProductId));
+        
+        if (Product is null)
+        {
+            Navigation.NotFound();
+        }
+    }
+}

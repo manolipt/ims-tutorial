@@ -1,0 +1,55 @@
+@inject IQueryHandler<ViewProductsByNameQuery, IEnumerable<Product>> ViewProductsByNameQueryHandler
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (_products is not null && _products.Count > 0)
+    {
+        foreach (var product in _products)
+        {
+            <ProductListItemComponent
+                @rendermode="InteractiveServer"
+                Product="product"
+                OnDeleteProduct="OnProductDeleted"
+                />
+        }
+    }
+    </tbody>
+</table>
+
+@code
+{
+    private List<Product>? _products;
+
+    [Parameter] public string? Filter { get; set; } = string.Empty;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        
+        _products = await RunQuery();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _products = await RunQuery();
+    }
+
+    private async Task OnProductDeleted()
+    {
+        _products = await RunQuery();
+    }
+
+    private async Task<List<Product>> RunQuery()
+    {
+        var products = await ViewProductsByNameQueryHandler
+            .HandleAsync(new ViewProductsByNameQuery(Filter ?? string.Empty));
+        return products.ToList();
+    }
+}
