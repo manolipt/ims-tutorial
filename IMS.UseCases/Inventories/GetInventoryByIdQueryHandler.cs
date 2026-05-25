@@ -3,14 +3,12 @@ using IMS.UseCases.PluginInterfaces;
 
 namespace IMS.UseCases.Inventories;
 
-using QueryHandler = IQueryHandler<GetInventoryByIdRequest, GetInventoryByIdResponse>;
+using QueryHandler = IQueryHandler<GetInventoryByIdQuery, Inventory?>;
 
-public record GetInventoryByIdRequest(int InventoryId);
-
-public record GetInventoryByIdResponse(Inventory? Inventory);
+public record GetInventoryByIdQuery(int InventoryId);
 
 public class GetInventoryByIdQueryHandler(IInventoryRepository inventoryRepository) : QueryHandler
 {
-    async Task<GetInventoryByIdResponse> QueryHandler.HandleAsync(GetInventoryByIdRequest request)
-        => new(await inventoryRepository.GetInventoryByIdAsync(request.InventoryId));
+    async Task<Inventory?> QueryHandler.HandleAsync(GetInventoryByIdQuery query)
+        => await inventoryRepository.GetInventoryByIdAsync(query.InventoryId);
 }

@@ -15,7 +15,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 
-builder.Services.AddQueryHandler<GetInventoryByIdRequest, GetInventoryByIdResponse, GetInventoryByIdQueryHandler>();
+builder.Services.AddQueryHandler<GetInventoryByIdQuery, Inventory?, GetInventoryByIdQueryHandler>();
 builder.Services.AddQueryHandler<ViewInventoriesByNameQuery, IEnumerable<Inventory>, ViewInventoriesByNameQueryHandler>();
 builder.Services.AddQueryHandler<GetProductByIdQuery, Product?, GetProductByIdQueryHandler>();
 builder.Services.AddQueryHandler<ViewProductsByNameQuery, IEnumerable<Product>, ViewProductsByNameQueryHandler>();
