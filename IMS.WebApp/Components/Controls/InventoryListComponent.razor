@@ -1,4 +1,4 @@
-@inject IQueryHandler<ViewInventoriesByNameQuery, IEnumerable<Inventory>> ViewInventoriesByNameQueryHandler
+@inject IQueryHandler<GetInventoriesByNameQuery, IEnumerable<Inventory>> ViewInventoriesByNameQueryHandler
 
 <table class="table">
     <thead>
@@ -44,7 +44,7 @@
     private async Task<List<Inventory>> RunQuery()
     {
         var inventories = await ViewInventoriesByNameQueryHandler
-            .HandleAsync(new ViewInventoriesByNameQuery(Filter ?? string.Empty));
+            .HandleAsync(new GetInventoriesByNameQuery(Filter ?? string.Empty));
         return inventories.ToList();
     }
 }

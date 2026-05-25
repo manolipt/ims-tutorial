@@ -1,6 +1,7 @@
 using IMS.CoreBusiness;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace IMS.WebApp;
+namespace IMS.UseCases;
 
 public static class ServiceCollectionEx
 {

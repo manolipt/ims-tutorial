@@ -7,7 +7,7 @@ using CommandHandler = ICommandHandler<AddInventoryCommand>;
 
 public record AddInventoryCommand(Inventory Inventory);
 
-public class AddInventoryCommandHandler(IInventoryRepository inventoryRepository)
+internal class AddInventoryCommandHandler(IInventoryRepository inventoryRepository)
     : CommandHandler
 {
     async Task CommandHandler.HandleAsync(AddInventoryCommand request)

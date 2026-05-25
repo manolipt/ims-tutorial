@@ -7,7 +7,7 @@ using CommandHandler = ICommandHandler<AddProductCommand>;
 
 public record AddProductCommand(Product Product);
 
-public class AddProductCommandHandler(IProductRepository productRepository) : CommandHandler
+internal class AddProductCommandHandler(IProductRepository productRepository) : CommandHandler
 {
     async Task CommandHandler.HandleAsync(AddProductCommand request)
     {

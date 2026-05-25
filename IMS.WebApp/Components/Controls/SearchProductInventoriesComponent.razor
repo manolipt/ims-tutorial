@@ -1,4 +1,4 @@
-@inject IQueryHandler<ViewInventoriesByNameQuery, IEnumerable<Inventory>> ViewInventoriesByNameQueryHandler
+@inject IQueryHandler<GetInventoriesByNameQuery, IEnumerable<Inventory>> ViewInventoriesByNameQueryHandler
 @implements IDisposable
 
 <div class="input-group">
@@ -37,7 +37,7 @@
     private async Task HandleSearch()
     {
         _inventories = (await ViewInventoriesByNameQueryHandler
-                .HandleAsync(new ViewInventoriesByNameQuery(_searchTerm)))
+                .HandleAsync(new GetInventoriesByNameQuery(_searchTerm)))
             .ToList();
 
         StateHasChanged();

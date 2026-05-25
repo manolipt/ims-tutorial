@@ -7,7 +7,7 @@ using CommandHandler = ICommandHandler<DeleteInventoryByIdCommand>;
 
 public record DeleteInventoryByIdCommand(int InventoryId);
 
-public class DeleteInventoryByIdCommandHandler(IInventoryRepository inventoryRepository) : CommandHandler
+internal class DeleteInventoryByIdCommandHandler(IInventoryRepository inventoryRepository) : CommandHandler
 {
     async Task CommandHandler.HandleAsync(DeleteInventoryByIdCommand request)
     {

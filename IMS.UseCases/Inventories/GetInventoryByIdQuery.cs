@@ -7,7 +7,7 @@ using QueryHandler = IQueryHandler<GetInventoryByIdQuery, Inventory?>;
 
 public record GetInventoryByIdQuery(int InventoryId);
 
-public class GetInventoryByIdQueryHandler(IInventoryRepository inventoryRepository) : QueryHandler
+internal class GetInventoryByIdQueryHandler(IInventoryRepository inventoryRepository) : QueryHandler
 {
     async Task<Inventory?> QueryHandler.HandleAsync(GetInventoryByIdQuery query)
     {

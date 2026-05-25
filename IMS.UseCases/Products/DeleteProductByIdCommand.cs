@@ -7,7 +7,7 @@ using CommandHandler = ICommandHandler<DeleteProductByIdCommand>;
 
 public record DeleteProductByIdCommand(int ProductId);
 
-public class DeleteProductByIdCommandHandler(IProductRepository productRepository) : CommandHandler
+internal class DeleteProductByIdCommandHandler(IProductRepository productRepository) : CommandHandler
 {
     async Task CommandHandler.HandleAsync(DeleteProductByIdCommand request)
     {
