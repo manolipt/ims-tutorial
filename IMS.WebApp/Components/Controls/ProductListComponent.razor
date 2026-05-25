@@ -18,7 +18,7 @@
                 @rendermode="InteractiveServer"
                 Product="product"
                 OnDeleteProduct="OnProductDeleted"
-                />
+            />
         }
     }
     </tbody>
@@ -29,10 +29,9 @@
     private List<Product>? _products;
 
     [Parameter] public string? Filter { get; set; } = string.Empty;
-    
+
     protected override async Task OnInitializedAsync()
     {
-        
         _products = await RunQuery();
     }
 

@@ -1,0 +1,56 @@
+@using FluentValidation
+@implements IDisposable
+
+@code {
+    [CascadingParameter] private EditContext EditContext { get; set; } = null!;
+    [Inject] private IServiceProvider ServiceProvider { get; set; } = null!;
+
+    private ValidationMessageStore _messageStore = null!;
+
+    protected override void OnInitialized()
+    {
+        _messageStore = new ValidationMessageStore(EditContext);
+
+        EditContext.OnValidationRequested += OnValidationRequested;
+        EditContext.OnFieldChanged += OnFieldChanged;
+    }
+
+    private void OnFieldChanged(object? sender, FieldChangedEventArgs e)
+    {
+        ValidateModel();
+    }
+
+    private void OnValidationRequested(object? sender, ValidationRequestedEventArgs e)
+    {
+        ValidateModel();
+    }
+
+    private void ValidateModel()
+    {
+        _messageStore.Clear();
+
+        var model = EditContext.Model;
+        var validatorType = typeof(IValidator<>).MakeGenericType(model.GetType());
+
+        if (ServiceProvider.GetService(validatorType) is not IValidator validator)
+            return;
+
+        var context = new ValidationContext<object>(model);
+        var result = validator.Validate(context);
+
+        foreach (var error in result.Errors)
+        {
+            var fieldIdentifier = EditContext.Field(error.PropertyName);
+            _messageStore.Add(fieldIdentifier, error.ErrorMessage);
+        }
+
+        EditContext.NotifyValidationStateChanged();
+    }
+
+    void IDisposable.Dispose()
+    {
+        EditContext.OnValidationRequested -= OnValidationRequested;
+        EditContext.OnFieldChanged -= OnFieldChanged;
+    }
+
+}

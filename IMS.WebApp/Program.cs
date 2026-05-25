@@ -1,4 +1,6 @@
+using FluentValidation;
 using IMS.CoreBusiness;
+using IMS.CoreBusiness.Validations;
 using IMS.Plugins.InMemory;
 using IMS.UseCases.Inventories;
 using IMS.UseCases.PluginInterfaces;
@@ -15,8 +17,12 @@ builder.Services.AddRazorComponents()
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 
+builder.Services.AddScoped<IValidator<Inventory>, InventoryValidator>();
+builder.Services.AddScoped<IValidator<Product>, ProductValidator>();
+
 builder.Services.AddQueryHandler<GetInventoryByIdQuery, Inventory?, GetInventoryByIdQueryHandler>();
-builder.Services.AddQueryHandler<ViewInventoriesByNameQuery, IEnumerable<Inventory>, ViewInventoriesByNameQueryHandler>();
+builder.Services
+    .AddQueryHandler<ViewInventoriesByNameQuery, IEnumerable<Inventory>, ViewInventoriesByNameQueryHandler>();
 builder.Services.AddQueryHandler<GetProductByIdQuery, Product?, GetProductByIdQueryHandler>();
 builder.Services.AddQueryHandler<ViewProductsByNameQuery, IEnumerable<Product>, ViewProductsByNameQueryHandler>();
 

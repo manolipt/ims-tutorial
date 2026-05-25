@@ -10,5 +10,7 @@ public record AddProductCommand(Product Product);
 public class AddProductCommandHandler(IProductRepository productRepository) : CommandHandler
 {
     async Task CommandHandler.HandleAsync(AddProductCommand request)
-        => await productRepository.AddProductAsync(request.Product);
+    {
+        await productRepository.AddProductAsync(request.Product);
+    }
 }

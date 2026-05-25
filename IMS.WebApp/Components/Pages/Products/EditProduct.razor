@@ -9,7 +9,7 @@
 @if (Product is not null)
 {
     <EditForm Model="Product" FormName="Product" OnValidSubmit="Save">
-        <DataAnnotationsValidator/>
+        <FluentValidationValidator/>
         <ValidationSummary/>
 
         <InputNumber @bind-Value="Product.ProductId" hidden></InputNumber>
@@ -54,10 +54,11 @@
     {
         Product ??= await GetProductByIdQueryHandler
             .HandleAsync(new GetProductByIdQuery(ProductId));
-        
+
         if (Product is null)
         {
             Navigation.NotFound();
         }
     }
+
 }

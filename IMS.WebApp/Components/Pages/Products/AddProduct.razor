@@ -9,12 +9,12 @@
 <br/>
 
 <EditForm Model="Product" OnValidSubmit="Save">
-    <DataAnnotationsValidator/>
+    <FluentValidationValidator/>
     <ValidationSummary/>
 
     <div class="form-group">
         <label for="name">
-             Name
+            Name
         </label>
         <InputText class="form-control" id="name" @bind-Value="Product!.ProductName"/>
         <ValidationMessage For="() => Product.ProductName"></ValidationMessage>
@@ -31,7 +31,7 @@
         <InputNumber class="form-control" id="price" @bind-Value="Product.Price"/>
         <ValidationMessage For="() => Product.Price"></ValidationMessage>
     </div>
-    
+
     <div class="form-group">
         <label>Inventories</label>
         <ProductInventoriesComponent Product="Product"></ProductInventoriesComponent>
@@ -50,4 +50,5 @@
         await AddProductCommandHandler.HandleAsync(new AddProductCommand(Product));
         Navigation.NavigateTo("/products");
     }
+
 }

@@ -2,7 +2,6 @@ namespace IMS.CoreBusiness;
 
 public interface ICommandHandler
 {
-    
 }
 
 public interface ICommandHandler<in TCommand> : ICommandHandler

@@ -2,7 +2,6 @@ namespace IMS.CoreBusiness;
 
 public interface IQueryHandler
 {
-    
 }
 
 public interface IQueryHandler<TResult> : IQueryHandler

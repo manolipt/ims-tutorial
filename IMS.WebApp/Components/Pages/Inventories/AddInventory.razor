@@ -1,5 +1,7 @@
 @page "/inventories/add"
 
+@rendermode InteractiveServer
+
 @inject ICommandHandler<AddInventoryCommand> AddInventoryCommandHandler
 @inject NavigationManager Navigation
 
@@ -7,7 +9,7 @@
 <br/>
 
 <EditForm Model="Inventory" FormName="formInventory" OnValidSubmit="Save">
-    <DataAnnotationsValidator/>
+    <FluentValidationValidator/>
     <ValidationSummary/>
 
     <div class="form-group">
@@ -46,4 +48,5 @@
         await AddInventoryCommandHandler.HandleAsync(new AddInventoryCommand(Inventory!));
         Navigation.NavigateTo("/inventories");
     }
+
 }

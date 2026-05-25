@@ -9,7 +9,7 @@
 @if (Inventory is not null)
 {
     <EditForm Model="Inventory" FormName="Inventory" OnValidSubmit="Save">
-        <DataAnnotationsValidator/>
+        <FluentValidationValidator/>
         <ValidationSummary/>
 
         <InputNumber @bind-Value="Inventory.InventoryId" hidden></InputNumber>
@@ -54,10 +54,11 @@
     {
         Inventory ??= await GetInventoryByIdQueryHandler
             .HandleAsync(new GetInventoryByIdQuery(InventoryId));
-        
+
         if (Inventory is null)
         {
             Navigation.NotFound();
         }
     }
+
 }

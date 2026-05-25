@@ -10,5 +10,7 @@ public record DeleteProductByIdCommand(int ProductId);
 public class DeleteProductByIdCommandHandler(IProductRepository productRepository) : CommandHandler
 {
     async Task CommandHandler.HandleAsync(DeleteProductByIdCommand request)
-        => await productRepository.DeleteProductByIdAsync(request.ProductId);
+    {
+        await productRepository.DeleteProductByIdAsync(request.ProductId);
+    }
 }

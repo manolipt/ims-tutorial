@@ -10,5 +10,7 @@ public record GetInventoryByIdQuery(int InventoryId);
 public class GetInventoryByIdQueryHandler(IInventoryRepository inventoryRepository) : QueryHandler
 {
     async Task<Inventory?> QueryHandler.HandleAsync(GetInventoryByIdQuery query)
-        => await inventoryRepository.GetInventoryByIdAsync(query.InventoryId);
+    {
+        return await inventoryRepository.GetInventoryByIdAsync(query.InventoryId);
+    }
 }

@@ -1,5 +1,4 @@
 @inject IQueryHandler<ViewInventoriesByNameQuery, IEnumerable<Inventory>> ViewInventoriesByNameQueryHandler
-@using System.Reflection.Metadata
 @implements IDisposable
 
 <div class="input-group">
@@ -32,15 +31,15 @@
     private CancellationTokenSource? _debounceTokenSource;
 
     [Parameter] public TimeSpan DebounceTime { get; set; } = TimeSpan.FromSeconds(0.5);
-    
+
     [Parameter] public EventCallback<Inventory> OnInventorySelected { get; set; }
-    
+
     private async Task HandleSearch()
     {
         _inventories = (await ViewInventoriesByNameQueryHandler
-            .HandleAsync(new ViewInventoriesByNameQuery(_searchTerm)))
+                .HandleAsync(new ViewInventoriesByNameQuery(_searchTerm)))
             .ToList();
-        
+
         StateHasChanged();
     }
 
@@ -54,7 +53,7 @@
     private async Task OnSearchInput(ChangeEventArgs args)
     {
         _searchTerm = args.Value?.ToString() ?? string.Empty;
-        
+
         // Cancel previous pending searches
         _debounceTokenSource?.Cancel();
         _debounceTokenSource = new CancellationTokenSource();

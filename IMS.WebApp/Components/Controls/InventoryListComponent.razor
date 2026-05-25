@@ -25,10 +25,9 @@
     private List<Inventory>? _inventories;
 
     [Parameter] public string? Filter { get; set; } = string.Empty;
-    
+
     protected override async Task OnInitializedAsync()
     {
-        
         _inventories = await RunQuery();
     }
 

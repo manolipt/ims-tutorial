@@ -10,5 +10,7 @@ public record ViewInventoriesByNameQuery(string Name = "");
 public class ViewInventoriesByNameQueryHandler(IInventoryRepository inventoryRepository) : QueryHandler
 {
     async Task<IEnumerable<Inventory>> QueryHandler.HandleAsync(ViewInventoriesByNameQuery query)
-        => await inventoryRepository.GetInventoriesByNameAsync(query.Name);
+    {
+        return await inventoryRepository.GetInventoriesByNameAsync(query.Name);
+    }
 }

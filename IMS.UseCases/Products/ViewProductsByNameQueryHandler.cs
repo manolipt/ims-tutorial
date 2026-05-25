@@ -10,5 +10,7 @@ public record ViewProductsByNameQuery(string Name = "");
 public class ViewProductsByNameQueryHandler(IProductRepository productRepository) : QueryHandler
 {
     async Task<IEnumerable<Product>> QueryHandler.HandleAsync(ViewProductsByNameQuery query)
-        => await productRepository.GetProductsByNameAsync(query.Name);
+    {
+        return await productRepository.GetProductsByNameAsync(query.Name);
+    }
 }

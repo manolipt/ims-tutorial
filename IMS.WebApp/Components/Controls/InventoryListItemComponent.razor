@@ -32,4 +32,5 @@
         await DeleteInventoryByIdCommandHandler.HandleAsync(new DeleteInventoryByIdCommand(inventoryId));
         await OnDeleteInventory.InvokeAsync(Inventory);
     }
+
 }

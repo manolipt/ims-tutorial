@@ -10,5 +10,7 @@ public record GetProductByIdQuery(int ProductId);
 public class GetProductByIdQueryHandler(IProductRepository productRepository) : QueryHandler
 {
     async Task<Product?> QueryHandler.HandleAsync(GetProductByIdQuery request)
-        => await productRepository.GetProductByIdAsync(request.ProductId);
+    {
+        return await productRepository.GetProductByIdAsync(request.ProductId);
+    }
 }

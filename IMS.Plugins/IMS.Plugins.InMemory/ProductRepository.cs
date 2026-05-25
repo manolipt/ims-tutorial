@@ -8,7 +8,7 @@ public class ProductRepository : IProductRepository
     private readonly List<Product> _products =
     [
         new() { ProductId = 1, ProductName = "Bike", Quantity = 10, Price = 150 },
-        new() { ProductId = 2, ProductName = "Car", Quantity = 10, Price = 2000 },
+        new() { ProductId = 2, ProductName = "Car", Quantity = 10, Price = 2000 }
     ];
 
     public Task<Product?> GetProductByIdAsync(int productId)

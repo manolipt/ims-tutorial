@@ -5,10 +5,10 @@
     padding-top: 5px;
 }
 
-.search-result ul{
+.search-result ul {
     list-style-type: none;
 }
 
-.search-result ul li{
+.search-result ul li {
     cursor: pointer;
 }
