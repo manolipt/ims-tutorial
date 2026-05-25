@@ -1,6 +1,6 @@
 namespace IMS.CoreBusiness;
 
-public class Product
+public class Product : ICloneable
 {
     public int ProductId { get; set; }
 
@@ -10,7 +10,11 @@ public class Product
 
     public int Price { get; set; }
 
-    public ICollection<ProductInventory> ProductInventories { get; set; } = [];
+    public ICollection<ProductInventory> ProductInventories
+    {
+        get => field ?? [];
+        init;
+    } = [];
 
     public void AddInventory(Inventory inventory)
     {
@@ -32,4 +36,13 @@ public class Product
         if (ProductInventories.Any(pi => pi.InventoryId == inventory.InventoryId))
             ProductInventories.Remove(ProductInventories.First(pi => pi.InventoryId == inventory.InventoryId));
     }
+
+    public object Clone()
+        => new Product
+        {
+            ProductId = ProductId,
+            ProductName = ProductName,
+            Quantity = Quantity,
+            Price = Price,
+        };
 }

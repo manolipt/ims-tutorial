@@ -14,9 +14,10 @@ public class InventoryRepository : IInventoryRepository
     ];
 
     public Task<Inventory?> GetInventoryByIdAsync(int inventoryId)
-    {
-        return Task.FromResult(_inventories.FirstOrDefault(i => i.InventoryId == inventoryId));
-    }
+        => Task.FromResult((Inventory?)
+            _inventories
+                .FirstOrDefault(i => i.InventoryId == inventoryId)
+                ?.Clone());
 
     public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
     {

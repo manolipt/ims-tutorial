@@ -1,5 +1,7 @@
 @page "/products/edit/{ProductId:int}"
 
+@rendermode InteractiveServer
+
 @inject ICommandHandler<EditProductCommand> EditProductCommandHandler
 @inject IQueryHandler<GetProductByIdQuery, Product?> GetProductByIdQueryHandler
 @inject NavigationManager Navigation
@@ -31,6 +33,11 @@
             <InputNumber class="form-control" id="price" @bind-Value="Product.Price"/>
             <ValidationMessage For="() => Product.Price"></ValidationMessage>
         </div>
+        
+        <div class="form-group">
+            <label>Inventories</label>
+            <ProductInventoriesComponent Product="Product"></ProductInventoriesComponent>
+        </div>
 
         <br/>
         <button type="submit" class="btn btn-primary">Save</button>
@@ -41,7 +48,7 @@
 @code {
     [Parameter] public int ProductId { get; init; }
 
-    [SupplyParameterFromForm] private Product? Product { get; set; }
+    private Product? Product { get; set; }
 
     private async Task Save()
     {
@@ -60,5 +67,4 @@
             Navigation.NotFound();
         }
     }
-
 }

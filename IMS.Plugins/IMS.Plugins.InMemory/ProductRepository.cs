@@ -12,9 +12,10 @@ public class ProductRepository : IProductRepository
     ];
 
     public Task<Product?> GetProductByIdAsync(int productId)
-    {
-        return Task.FromResult(_products.FirstOrDefault(p => p.ProductId == productId));
-    }
+        => Task.FromResult((Product?)
+            _products
+                .FirstOrDefault(p => p.ProductId == productId)
+                ?.Clone());
 
     public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
     {
