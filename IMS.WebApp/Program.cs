@@ -3,9 +3,8 @@ using IMS.CoreBusiness;
 using IMS.CoreBusiness.Validations;
 using IMS.Plugins.InMemory;
 using IMS.UseCases;
-using IMS.UseCases.Inventories;
 using IMS.UseCases.PluginInterfaces;
-using IMS.UseCases.Products;
+using IMS.UseCases.Repositories;
 using IMS.WebApp;
 using IMS.WebApp.Components;
 
@@ -15,14 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
-builder.Services.AddSingleton<IProductRepository, ProductRepository>();
-
 builder.Services.AddScoped<IValidator<Inventory>, InventoryValidator>();
 builder.Services.AddScoped<IValidator<Product>, ProductValidator>();
 
-builder.Services.AddInventoryFeatures();
-builder.Services.AddProductFeatures();
+// builder.Services.AddInventoryFeatures();
+// builder.Services.AddProductFeatures();
+builder.Services.AddRepositoryFeaturesFor<Inventory, InventoryRepository>();
+builder.Services.AddRepositoryFeaturesFor<Product, ProductRepository>();
 
 var app = builder.Build();
 

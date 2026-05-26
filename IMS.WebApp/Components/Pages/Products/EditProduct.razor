@@ -2,8 +2,8 @@
 
 @rendermode InteractiveServer
 
-@inject ICommandHandler<EditProductCommand> EditProductCommandHandler
-@inject IQueryHandler<GetProductByIdQuery, Product?> GetProductByIdQueryHandler
+@inject ICommandHandler<EditEntryCommand<Product>> EditEntryCommandHandler
+@inject IQueryHandler<GetByIdQuery<Product>, Product?> GetByIdQueryHandler
 @inject NavigationManager Navigation
 
 <h3>Edit Product</h3>
@@ -53,14 +53,14 @@
     private async Task Save()
     {
         if (Product is null) return;
-        await EditProductCommandHandler.HandleAsync(new EditProductCommand(Product));
+        await EditEntryCommandHandler.HandleAsync(new EditEntryCommand<Product>(Product));
         Navigation.NavigateTo("/products");
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        Product ??= await GetProductByIdQueryHandler
-            .HandleAsync(new GetProductByIdQuery(ProductId));
+        Product ??= await GetByIdQueryHandler
+            .HandleAsync(new GetByIdQuery<Product>(ProductId));
 
         if (Product is null)
         {

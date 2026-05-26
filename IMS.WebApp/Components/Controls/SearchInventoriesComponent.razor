@@ -1,4 +1,4 @@
-@inject IQueryHandler<GetInventoriesByNameQuery, IEnumerable<Inventory>> GetInventoriesByNameQueryHandler
+@inject IQueryHandler<GetByNameQuery<Inventory>, IEnumerable<Inventory>> GetByNameQueryHandler
 @implements IDisposable
 
 <div class="input-group">
@@ -36,8 +36,8 @@
 
     private async Task HandleSearch()
     {
-        _inventories = (await GetInventoriesByNameQueryHandler
-                .HandleAsync(new GetInventoriesByNameQuery(_searchTerm)))
+        _inventories = (await GetByNameQueryHandler
+                .HandleAsync(new GetByNameQuery<Inventory>(_searchTerm)))
             .ToList();
 
         StateHasChanged();
@@ -55,7 +55,10 @@
         _searchTerm = args.Value?.ToString() ?? string.Empty;
 
         // Cancel previous pending searches
-        _debounceTokenSource?.Cancel();
+        if (_debounceTokenSource is not null)
+        {
+            await _debounceTokenSource.CancelAsync();
+        }
         _debounceTokenSource = new CancellationTokenSource();
         var token = _debounceTokenSource.Token;
 

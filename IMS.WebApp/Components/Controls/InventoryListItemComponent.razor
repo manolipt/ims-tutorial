@@ -1,4 +1,4 @@
-@inject ICommandHandler<DeleteInventoryByIdCommand> DeleteInventoryByIdCommandHandler
+@inject ICommandHandler<DeleteByIdCommand<Inventory>> DeleteByIdCommandHandler
 
 <tr>
     <td>@Inventory.InventoryName</td>
@@ -29,7 +29,7 @@
 
     private async Task DeleteInventory(int inventoryId)
     {
-        await DeleteInventoryByIdCommandHandler.HandleAsync(new DeleteInventoryByIdCommand(inventoryId));
+        await DeleteByIdCommandHandler.HandleAsync(new DeleteByIdCommand<Inventory>(inventoryId));
         await OnDeleteInventory.InvokeAsync(Inventory);
     }
 

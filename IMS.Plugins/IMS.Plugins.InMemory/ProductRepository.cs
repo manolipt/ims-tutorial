@@ -3,28 +3,38 @@ using IMS.UseCases.PluginInterfaces;
 
 namespace IMS.Plugins.InMemory;
 
-public class ProductRepository : IProductRepository
+public class ProductRepository : IRepository<Product>
 {
     private readonly List<Product> _products =
     [
         new() { ProductId = 1, ProductName = "Bike", Quantity = 10, Price = 150 },
         new() { ProductId = 2, ProductName = "Car", Quantity = 10, Price = 2000 }
     ];
+    
+    public Task<Product?> GetByIdAsync(int id) => GetProductByIdAsync(id);
 
-    public Task<Product?> GetProductByIdAsync(int productId)
+    public Task<IEnumerable<Product>> GetByNameAsync(string name) => GetProductsByNameAsync(name);
+
+    public Task AddAsync(Product entry) => AddProductAsync(entry);
+
+    public Task UpdateAsync(Product entry) => UpdateProductAsync(entry);
+
+    public Task DeleteByIdAsync(int id) => DeleteProductByIdAsync(id);
+
+    private Task<Product?> GetProductByIdAsync(int productId)
         => Task.FromResult((Product?)
             _products
                 .FirstOrDefault(p => p.ProductId == productId)
                 ?.Clone());
 
-    public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
+    private async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
     {
         if (string.IsNullOrWhiteSpace(name)) return await Task.FromResult(_products);
 
         return _products.Where(p => p.ProductName.Contains(name, StringComparison.OrdinalIgnoreCase));
     }
 
-    public Task AddProductAsync(Product product)
+    private Task AddProductAsync(Product product)
     {
         // Enforce uniqueness of Product name
         if (_products.Any(p =>
@@ -37,7 +47,7 @@ public class ProductRepository : IProductRepository
         return Task.CompletedTask;
     }
 
-    public Task UpdateProductAsync(Product product)
+    private Task UpdateProductAsync(Product product)
     {
         // Enforce uniqueness of Product name
         if (_products.Any(p =>
@@ -54,8 +64,8 @@ public class ProductRepository : IProductRepository
         productToUpdate.Quantity = product.Quantity;
         return Task.CompletedTask;
     }
-
-    public Task DeleteProductByIdAsync(int productId)
+    
+    private Task DeleteProductByIdAsync(int productId)
     {
         _products.RemoveAll(p => p.ProductId == productId);
         return Task.CompletedTask;

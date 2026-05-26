@@ -1,10 +1,23 @@
 using IMS.CoreBusiness;
+using IMS.UseCases.PluginInterfaces;
+using IMS.UseCases.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IMS.UseCases;
 
 public static class ServiceCollectionEx
 {
+    public static void AddRepositoryFeaturesFor<TEntry, TRepository>(this IServiceCollection services)
+        where TRepository : class, IRepository<TEntry>
+    {
+        services.AddSingleton<IRepository<TEntry>, TRepository>();
+        services.AddQueryHandler<GetByIdQuery<TEntry>, TEntry?, GetByIdQueryHandler<TEntry>>();
+        services.AddQueryHandler<GetByNameQuery<TEntry>, IEnumerable<TEntry>, GetProductsByNameQueryHandler<TEntry>>();
+        services.AddCommandHandler<AddEntryCommand<TEntry>, AddEntryCommandHandler<TEntry>>();
+        services.AddCommandHandler<EditEntryCommand<TEntry>, EditEntryCommandHandler<TEntry>>();
+        services.AddCommandHandler<DeleteByIdCommand<TEntry>, DeleteByIdCommandHandler<TEntry>>();
+    }
+
     public static IServiceCollection AddCommandHandler<TCommand, THandler>(this IServiceCollection services)
         where THandler : class, ICommandHandler<TCommand>
     {

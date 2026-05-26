@@ -2,7 +2,7 @@
 
 @rendermode InteractiveServer
 
-@inject ICommandHandler<AddProductCommand> AddProductCommandHandler
+@inject ICommandHandler<AddEntryCommand<Product>> AddEntryCommandHandler
 @inject NavigationManager Navigation
 
 <h3>Add Product</h3>
@@ -47,7 +47,7 @@
 
     private async Task Save()
     {
-        await AddProductCommandHandler.HandleAsync(new AddProductCommand(Product));
+        await AddEntryCommandHandler.HandleAsync(new AddEntryCommand<Product>(Product));
         Navigation.NavigateTo("/products");
     }
 }

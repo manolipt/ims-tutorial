@@ -1,4 +1,4 @@
-@inject ICommandHandler<DeleteProductByIdCommand> DeleteProductByIdCommandHandler
+@inject ICommandHandler<DeleteByIdCommand<Product>> DeleteByIdCommandHandler
 
 @if (Product is not null)
 {
@@ -32,7 +32,7 @@
 
     private async Task DeleteProduct(int productId)
     {
-        await DeleteProductByIdCommandHandler.HandleAsync(new DeleteProductByIdCommand(productId));
+        await DeleteByIdCommandHandler.HandleAsync(new DeleteByIdCommand<Product>(productId));
         await OnDeleteProduct.InvokeAsync(Product);
         Product = null;
     }

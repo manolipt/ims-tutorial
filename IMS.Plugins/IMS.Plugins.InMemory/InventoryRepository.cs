@@ -3,7 +3,7 @@ using IMS.UseCases.PluginInterfaces;
 
 namespace IMS.Plugins.InMemory;
 
-public class InventoryRepository : IInventoryRepository
+public class InventoryRepository : IRepository<Inventory>
 {
     private readonly List<Inventory> _inventories =
     [
@@ -12,21 +12,31 @@ public class InventoryRepository : IInventoryRepository
         new() { InventoryId = 3, InventoryName = "Bike Wheels", Quantity = 20, Price = 8 },
         new() { InventoryId = 4, InventoryName = "Bike Pedals", Quantity = 20, Price = 1 }
     ];
+    
+    public Task<Inventory?> GetByIdAsync(int id) => GetInventoryByIdAsync(id);
 
-    public Task<Inventory?> GetInventoryByIdAsync(int inventoryId)
+    public Task<IEnumerable<Inventory>> GetByNameAsync(string name) => GetInventoriesByNameAsync(name);
+
+    public Task AddAsync(Inventory entry) => AddInventoryAsync(entry);
+
+    public Task UpdateAsync(Inventory entry) => UpdateInventoryAsync(entry);
+
+    public Task DeleteByIdAsync(int id) => DeleteInventoryByIdAsync(id);
+
+    private Task<Inventory?> GetInventoryByIdAsync(int inventoryId)
         => Task.FromResult((Inventory?)
             _inventories
                 .FirstOrDefault(i => i.InventoryId == inventoryId)
                 ?.Clone());
 
-    public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
+    private async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
     {
         if (string.IsNullOrWhiteSpace(name)) return await Task.FromResult(_inventories);
 
         return _inventories.Where(x => x.InventoryName.Contains(name, StringComparison.OrdinalIgnoreCase));
     }
 
-    public Task AddInventoryAsync(Inventory inventory)
+    private Task AddInventoryAsync(Inventory inventory)
     {
         // Enforce uniqueness of inventory name
         if (_inventories.Any(x =>
@@ -39,7 +49,7 @@ public class InventoryRepository : IInventoryRepository
         return Task.CompletedTask;
     }
 
-    public Task UpdateInventoryAsync(Inventory inventory)
+    private Task UpdateInventoryAsync(Inventory inventory)
     {
         // Enforce uniqueness of inventory name
         if (_inventories.Any(x =>
@@ -57,7 +67,7 @@ public class InventoryRepository : IInventoryRepository
         return Task.CompletedTask;
     }
 
-    public Task DeleteInventoryByIdAsync(int inventoryId)
+    private Task DeleteInventoryByIdAsync(int inventoryId)
     {
         _inventories.RemoveAll(i => i.InventoryId == inventoryId);
         return Task.CompletedTask;
