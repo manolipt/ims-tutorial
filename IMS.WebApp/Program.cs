@@ -16,11 +16,11 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddScoped<IValidator<Inventory>, InventoryValidator>();
 builder.Services.AddScoped<IValidator<Product>, ProductValidator>();
+builder.Services.AddScoped<IValidator<InventoryTransaction>, InventoryTransactionValidator>();
 
-// builder.Services.AddInventoryFeatures();
-// builder.Services.AddProductFeatures();
 builder.Services.AddRepositoryFeaturesFor<Inventory, InventoryRepository>();
 builder.Services.AddRepositoryFeaturesFor<Product, ProductRepository>();
+builder.Services.AddRepositoryFeaturesFor<InventoryTransaction, InventoryTransactionRepository>();
 
 var app = builder.Build();
 

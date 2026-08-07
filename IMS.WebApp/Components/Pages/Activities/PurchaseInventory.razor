@@ -1,0 +1,23 @@
+@page "/purchase"
+@rendermode InteractiveServer
+@inject IQueryHandler<GetByNameQuery<Inventory>, IEnumerable<Inventory>> GetByNameQueryHandler
+
+<h3>PurchaseInventory</h3>
+<br/>
+<AutoCompleteComponent
+    Label="Inventory"
+    SearchFunction="SearchInventory"
+    OnItemSelected="OnInventorySelected"></AutoCompleteComponent>
+@code {
+    
+    
+    private void OnInventorySelected(AutoCompleteComponent.ItemViewModel obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    private async Task<IEnumerable<AutoCompleteComponent.ItemViewModel>> SearchInventory(string arg) =>
+        (await GetByNameQueryHandler.HandleAsync(new GetByNameQuery<Inventory>(arg)))
+        .Select(i => new AutoCompleteComponent.ItemViewModel(i.InventoryId, i.InventoryName));
+
+}

@@ -67,7 +67,7 @@ public class InventoryRepository : IRepository<Inventory>
         return Task.CompletedTask;
     }
 
-    private Task DeleteInventoryByIdAsync(int inventoryId)
+     Task DeleteInventoryByIdAsync(int inventoryId)
     {
         _inventories.RemoveAll(i => i.InventoryId == inventoryId);
         return Task.CompletedTask;
